@@ -31,11 +31,16 @@ router.post('/', [
 
         await user.save();
 
-        res.send("User register")
+        // Create token
+        const token = user.getSignedJwtToken(); 
+
+        console.log("token", token);
+        res.json({token});
     } catch(err) {
         console.error("err", err.message);
         res.status(500).send("Server error");
     }
 });
+
 
 module.exports = router;

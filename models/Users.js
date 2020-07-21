@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -48,6 +50,18 @@ UserSchema.pre('save', function(next) {
     this.password = bcrypt.hashSync(this.password, salt);
     
     next();
-})
+});
+
+// Sign JWT and return
+UserSchema.methods.getSignedJwtToken = function () {
+    let payload = {
+        user:  {
+            id: this._id
+        }
+    };
+
+    return jwt.sign(payload, config.get('jwtSecret'), 
+    {expiresIn: 360000});
+};
 
 module.exports = User = mongoose.model('user', UserSchema);
