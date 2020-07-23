@@ -34,7 +34,6 @@ router.post('/', [
         // Create token
         const token = user.getSignedJwtToken(); 
 
-        console.log("token", token);
         res.json({token});
     } catch(err) {
         console.error("err", err.message);
