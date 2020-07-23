@@ -40,8 +40,6 @@ router.post('/', [auth, [
         return res.status(400).json({errors: errors.array()});
     };
 
-    console.log("req.body", req.body);
-    
     const {
         company, website, location, status, bio, skills, githubusername,
         youtube, facebook, twitter, instagram, linkedin
@@ -70,10 +68,6 @@ router.post('/', [auth, [
     if (facebook) profileFields.social.facebook = facebook;
     if (linkedin) profileFields.social.linkedin = linkedin;
     if (instagram) profileFields.social.instagram =  instagram;
-
-
-    console.log("profileFields", profileFields);
-    
 
     try {
         let profile = await Profile.findOne({user: req.user.id});
