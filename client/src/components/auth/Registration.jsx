@@ -2,20 +2,18 @@ import React, { Component } from "react";
 // import { Link } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 import HeaderNavbar from "../pages/common/header-navigation";
 import Footer from "../pages/common/footer";
-import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
 class Registation extends Component {
-    constructor({setAlert}) {
-        super({setAlert});
+    constructor(props) {
+        super(props);
         this.state = {
             name: "",
             email: "",
-            number: "",
             password: "",
             confirmPassword: "",
 
@@ -32,10 +30,10 @@ class Registation extends Component {
     
     mySubmitHandler = async (event) => {
         event.preventDefault();
-        let data= {
+
+        let data = {
             name: this.state.name,
             email: this.state.email,
-            number: this.state.number,
             password: this.state.password,
         },
         confirmPassword = this.state.confirmPassword;
@@ -45,33 +43,13 @@ class Registation extends Component {
                 position: toast.POSITION.TOP_CENTER
             });
         } else {
-            // let user = serviceHelpers.register(data);
-            // console.log("users", user);
-
-            try {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
-                const body = JSON.stringify(data);
-
-                const res = await axios.post('/api/users', body, config);
-
-                console.log("res", res);
-                
-            } catch (err) {
-                
-            }
+            this.props.register(data);
         }; 
     };
 
     loginSubmit = async (e) => {
         e.preventDefault();
         console.log(e);
-
-        // this.props.setAlert('Passwords do not match', 'danger');
-        
     }
 
     render() {
@@ -102,7 +80,7 @@ class Registation extends Component {
                                             <div className="form-group">
                                                 <label>Password</label>
                                                 <input type="password" className="form-control" name="loginPassword"
-                                                    onChange={this.myChangeHandler} id="date" placeholder="Enter Password"/>
+                                                    onChange={this.myChangeHandler} id="loginPassword" placeholder="Enter Password"/>
                                             </div>
                                         </div>
                                         <div className="col-12">
@@ -142,23 +120,17 @@ class Registation extends Component {
                                             onChange={this.myChangeHandler}
                                              id="email" placeholder="abc@xyz.com"/>
                                         </div>
-                                        <div className="form-group col-12">
-                                            <label>Phone Number:</label> 
-                                            <input type="text" className="form-control" name="number"
-                                            onChange={this.myChangeHandler}
-                                             id="date1" placeholder="Select Date"/>
-                                        </div>
                                         <div className="form-group col-6">
                                             <label>Select Password :</label>
                                             <input type="password" className="form-control" name="password"
                                             onChange={this.myChangeHandler}
-                                            id="date" placeholder="Enter Password"/>
+                                            id="password" placeholder="Enter Password"/>
                                         </div>
                                         <div className="form-group col-6 col-left-padding">
                                             <label>Confirm Password :</label>
                                             <input type="password" className="form-control" name="confirmPassword"
                                             onChange={this.myChangeHandler}
-                                             id="phnumber" placeholder="Re-enter Password"/>
+                                             id="password2" placeholder="Re-enter Password"/>
                                         </div>
                                         {/* <div className="col-12 d-none">
                                             <div className="checkbox-outer">
@@ -186,7 +158,7 @@ class Registation extends Component {
 }
 
 Registation.propTypes = {
-    setAlert: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired,
 }
 
-export default connect(null, { setAlert })(Registation);
+export default connect(null, { register })(Registation);

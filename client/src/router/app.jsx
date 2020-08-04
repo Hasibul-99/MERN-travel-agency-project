@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminLayout from "../layouts/Admin";
 import AuthLayout from "../layouts/Auth";
 import CommonRouter from "../layouts/Common";
-import Alert from '../components/common/Alert';
 
 // Redux
 import {Provider} from 'react-redux';
@@ -28,7 +27,6 @@ class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                {/* <Alert /> */}
                 <Switch>
                     {/* <Route path="/auth" component={AuthLayout} /> auto rename
                     <Route path="/admin" component={AdminLayout} />
