@@ -53,6 +53,8 @@ class Registation extends Component {
     }
 
     render() {
+        console.log("token", localStorage.getItem('token'));
+        
         return (
             <>
             <HeaderNavbar/>

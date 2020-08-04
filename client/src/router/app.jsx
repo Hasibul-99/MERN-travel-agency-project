@@ -14,6 +14,12 @@ import CommonRouter from "../layouts/Common";
 // Redux
 import {Provider} from 'react-redux';
 import store from '../store';
+import setAuthToken from '../utils/setAuthToken';
+import { loadUser } from '../actions/auth';
+
+if (localStorage.token) {
+    setAuthToken(localStorage.token);
+}
 
 class App extends Component {
     constructor(props) {
@@ -22,6 +28,9 @@ class App extends Component {
             isLogin: true,
             isAdmin: false,
         }
+    }
+    componentDidMount() {
+        store.dispatch(loadUser());
     }
 
     render() {
