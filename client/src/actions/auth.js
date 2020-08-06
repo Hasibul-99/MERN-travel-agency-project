@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERROR } from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, 
+    AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL } from './types';
 import { toast } from 'react-toastify';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -39,7 +40,9 @@ export const register = ({name, email, password}) => async dispatch => {
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data
-        })
+        });
+
+        dispatch(loadUser());
     } catch (err) {
         const errors = err.response.data.errors;
 
@@ -53,6 +56,45 @@ export const register = ({name, email, password}) => async dispatch => {
 
         dispatch({
             type: REGISTER_FAIL
+        });
+    }
+};
+
+// Login User
+export const login = ({email, password}) => async dispatch => {
+
+    console.log("helllo");
+    
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify({email, password});
+
+    try {
+        const res = await axios.post('/api/auth', body, config);
+
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+        });
+
+        dispatch(loadUser());
+    } catch (err) {
+        const errors = err.response.data.errors;
+
+        if (errors && errors.length) {
+            errors.forEach(error => {
+                toast.warning(error.msg, {
+                    position: toast.POSITION.TOP_CENTER
+                });
+            })
+        };
+
+        dispatch({
+            type: LOGIN_FAIL 
         });
     }
 }

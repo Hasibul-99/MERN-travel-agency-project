@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { toast, ToastContainer } from 'react-toastify';
 import { connect } from 'react-redux';
 
 import HeaderNavbar from "../pages/common/header-navigation";
 import Footer from "../pages/common/footer";
-import { register } from '../../actions/auth';
+import { register, login } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
 class Registation extends Component {
@@ -49,12 +49,30 @@ class Registation extends Component {
 
     loginSubmit = async (e) => {
         e.preventDefault();
-        console.log(e);
+
+        let loginData = {
+            email: this.state.loginEmail,
+            password: this.state.loginPassword
+        };
+
+        if (!loginData.email) {
+            toast.warning("Email is required!", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        } else if (!loginData.password) {
+            toast.warning("Password is required!", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        } else {
+            this.props.login(loginData);
+        }
     }
 
     render() {
-        console.log("token", localStorage.getItem('token'));
-        
+        if (this.props.isAuthenticated) {
+            return <Redirect to="/" />
+        };
+
         return (
             <>
             <HeaderNavbar/>
@@ -161,6 +179,12 @@ class Registation extends Component {
 
 Registation.propTypes = {
     register: PropTypes.func.isRequired,
-}
+    login: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool,
+};
 
-export default connect(null, { register })(Registation);
+const mapStateToProps = state => {
+    return { isAuthenticated: state.auth.isAuthenticated };
+};
+
+export default connect(mapStateToProps, { register, login })(Registation);
