@@ -75,7 +75,7 @@ class DestinationOuter extends React.Component {
                                 <div className="fw-btns">
                                     <div className="fw-price"><p>Starts from:<span className="bold">$659</span></p></div>
                                     <div className="destination-btns">
-                                        <Link to="#" className="btn-blue btn-red" tabindex="0">Book Now</Link>
+                                        <Link to="#" className="btn-blue btn-red" tabIndex="0">Book Now</Link>
                                     </div>
                                 </div>
                             </div>
