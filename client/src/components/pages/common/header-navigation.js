@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Link} from 'react-router-dom';
-
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'; 
+import { logout } from '../../../actions/auth';
 import Yatra01 from  "../../../assets/images/Yatra-01.png";
 
-function HeaderNavbar(props) {
+const  HeaderNavbar = ({auth: {isAuthenticated, loading}, logout}) => {
+
+    const authLinks = (
+        <div className="login-btn float-right">
+            <Link onClick={logout} to="#!"><i className="fa fa-unlock-alt"></i> Logout</Link>
+        </div>
+    );
+
+    const guestLinks = (
+        <div className="login-btn float-right">
+            <Link to="/auth/login"><i className="fa fa-user-plus"></i> Register</Link>
+            <Link to="/auth/login"><i className="fa fa-unlock-alt"></i> Login</Link>
+        </div>
+    );
+
     return (
         <>
         <header>
@@ -13,10 +29,7 @@ function HeaderNavbar(props) {
                         <p><i className="flaticon-phone-call"></i> Phone: (012)-345-6789</p>
                         <p><i className="flaticon-mail"></i> Mail: tourntravel@testmail.com</p>
                     </div>
-                    <div className="login-btn float-right">
-                        <Link to="/auth/login"><i className="fa fa-user-plus"></i> Register</Link>
-                        <Link to="/auth/login"><i className="fa fa-unlock-alt"></i> Login</Link>
-                    </div>
+                    {!loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks }</Fragment>)}
                 </div>
             </div>
         </header>
@@ -47,6 +60,15 @@ function HeaderNavbar(props) {
         </nav>
         </>
     );
+};
+
+HeaderNavbar.propTypes = {
+    logout: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
 }
 
-export default HeaderNavbar;
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(mapStateToProps, {logout})(HeaderNavbar);
