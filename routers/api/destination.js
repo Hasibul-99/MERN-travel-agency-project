@@ -10,16 +10,80 @@ const Destination = require('../../models/Destination');
 // @access  private
 router.get('/', auth, async (req, res) => {
     try {
-        // const profile = await Profile.findOne({user: req.user.id}).populate(
-        //     'user',
-        //     ['name', 'avatar']
-        // );
+        let query = {};
+        const reqQuery = {
+            ...req.query
+        };
 
-        // if (!profile) {
-        //     return res.status(400).json({msg: "There is no Profile for this user"})
-        // };
+        // Fields to exclude
+        const removeFields = ["select", "sort", "page", "limit"];
 
-        // res.json(profile);
+        // Loop over removeFields and delete them from reqQuesry
+        removeFields.forEach((param) => delete reqQuery[param]);
+
+        // Create query string
+        let queryStr = JSON.stringify(reqQuery);
+
+        // Create operators ($get, $get, etc)
+        queryStr = queryStr.replace(
+            /\b(gt|gte|lt|lte|in)\b/g,
+            (match) => `$${match}`
+        );
+
+        console.log("queryStr", queryStr);
+
+        query = Destination.find(JSON.parse(queryStr));
+
+        //Select Fields
+        if (req.query.select) {
+            const fields = req.query.select.split(",").join(" ");
+            query = query.select(fields);
+        }
+
+        // Sort
+        if (req.query.sort) {
+            const sortBy = req.query.sort.split(",").join(" ");
+            query = query.sort(sortBy);
+        } else {
+            query = query.sort("-createdAt");
+        };
+
+        //Pagination
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 25;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const total = await Destination.countDocuments();
+
+        query = query.skip(startIndex).limit(limit);
+
+        // Executing result
+        const destinations = await query;
+
+        // Pagination result
+        const pagination = {};
+
+        if (endIndex < total) {
+            pagination.next = {
+                page: page + 1,
+                limit,
+            };
+        }
+
+        if (startIndex > 0) {
+            pagination.prev = {
+                page: page - 1,
+                limit,
+            };
+        }
+
+        res.status(200).json({
+            success: true,
+            count: destinations.length,
+            pagination: pagination,
+            data: destinations,
+        });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
