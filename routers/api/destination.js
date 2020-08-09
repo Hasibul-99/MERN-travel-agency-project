@@ -4,9 +4,8 @@ const { check, validationResult } = require("express-validator");
 const auth  = require('../../middleware/auth');
 const Destination = require('../../models/Destination');
 
-
 // @route   GET api/destination
-// @dosc    Get destination
+// @dosc    Get destinations
 // @access  private
 router.get('/', auth, async (req, res) => {
     try {
@@ -91,6 +90,29 @@ router.get('/', auth, async (req, res) => {
 });
 
 
+// @route   GET api/destination/:id
+// @dosc    Get destination
+// @access  public
+router.get('/:id', auth, async (req, res) => {
+    try {
+        const destination = await Destination.findById(req.params.id);
+
+        if (!destination) {
+            res.status(404).send('Destination not found');
+        };
+
+        res.status(200).json({
+            success: true,
+            data: destination,
+        });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+
 // @route   POST api/destination
 // @dosc    current new destination
 // @access  private
@@ -162,7 +184,6 @@ router.post('/', [auth, [
        console.error(err.message);
        res.status(500).send('Server Error'); 
    }
-
 });
 
 module.exports = router;
