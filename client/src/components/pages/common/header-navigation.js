@@ -20,6 +20,13 @@ const  HeaderNavbar = ({auth: {isAuthenticated, loading}, logout}) => {
         </div>
     );
 
+    const className = (location, path) => {
+        let className = 'nav-item';
+        if (location === path) className = "nav-item active";
+        return className;
+    }
+    
+
     return (
         <>
         <header>
@@ -42,16 +49,16 @@ const  HeaderNavbar = ({auth: {isAuthenticated, loading}, logout}) => {
                 </div>
                 <div className="navbar-nav-wrapper float-right">
                     <ul className="nav navbar-nav">
-                        <li className="nav-item active">
+                        <li className={className(window.location.pathname, '/')}>
                             <Link to="/">HOME</Link>
                         </li>
-                        <li className="nav-item">
+                        <li className={className(window.location.pathname, '/destination')}>
                             <Link to="/destination">DESTINATION</Link>
                         </li>
-                        <li className="nav-item">
+                        <li className={className(window.location.pathname, '/blogs')}>
                             <Link to="/blogs">BLOG</Link>
                         </li>
-                        <li className="nav-item">
+                        <li className={className(window.location.pathname, '/contact')}>
                             <Link to="/contact">CONTACT US</Link>
                         </li>
                     </ul>
