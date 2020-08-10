@@ -6,6 +6,10 @@ const DestinationSchema = new mongoose.Schema({
         ref: 'user',
         required: true
     },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+    },
     title: {
         type: String,
         required: true
@@ -84,7 +88,11 @@ const DestinationSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    lastUpdate: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 module.exports = destination = mongoose.model('Destination', DestinationSchema);
