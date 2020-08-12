@@ -21,6 +21,9 @@ const DestinationSchema = new mongoose.Schema({
     keywords: {
         type: [String]
     },
+    photos: {
+        type: [String]
+    },
     status: {
         type: String,
         default: 'active',

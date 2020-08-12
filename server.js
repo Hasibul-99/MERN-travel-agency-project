@@ -1,9 +1,17 @@
 const express = require("express");
+const path = require('path');
 const connectDB = require('./config/db');
 const app = express();
+const fileupload = require('express-fileupload');
 
 // Connect Database
 connectDB();
+
+//File uploading
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Init Middleware
 app.use(express.json({extended: false}));

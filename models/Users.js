@@ -27,6 +27,15 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    type: {
+        type: String,
+        default: 'user'
+    },
+    status: {
+        type: String,
+        default: "active"
+        // allowedValues: ["invited", "active", "inactive"]
     }
 });
 

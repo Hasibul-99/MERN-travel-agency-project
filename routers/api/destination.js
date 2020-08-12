@@ -1,8 +1,15 @@
+const path = require('path');
 const express =  require('express');
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
+const shortid = require('shortid');
 const auth  = require('../../middleware/auth');
 const Destination = require('../../models/Destination');
+
+const config  = require("config");
+const filePath = config.get('fileUploadPath');
+const maxFieleSize = config.get('maxFileSize');
+
 
 // @route   GET api/destination
 // @dosc    Get destinations
@@ -268,6 +275,53 @@ router.put('/:id', [auth, [
        console.error(err.message);
        res.status(500).send('Server Error'); 
    }
+});
+
+// @route   PUT api/destination/:id/photo
+// @dosc    put destination photo
+// @access  private
+router.put('/:id/photo', auth, async (req, res) => {
+    try {
+        const destination = await Destination.findById(req.params.id);
+
+        if (!destination) {
+            return res.status(404).send('Destination not found');
+        };
+
+        if (!req.files) {
+            return res.status(400).send('Please upload a file');
+        };
+
+        const file = req.files.file;
+
+        if (!file.mimetype.startsWith('image')) {
+            return res.status(400).send('Please upload an image file');
+        };
+
+        if (file.size > 1000000) {
+            return res.status(400).send(`Please upload an image less than 1000000`);
+        };
+
+        // Create custom filename
+        file.name = `photo_${destination._id}-CODE-${shortid.generate()}${path.parse(file.name).ext}`;
+
+        file.mv(`${filePath}/${file.name}`, async err => {
+            
+            if (err) {
+                return res.status(500).send(`Problem with file upload`);
+            }
+    
+            let data = await Destination.findByIdAndUpdate(req.params.id, { $push: { photos: {$each: [`uploads/${file.name}`]}}}, {new: true});
+        
+            res.status(200).json({
+                success: true,
+                data: data
+            });
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
 });
 
 module.exports = router;
