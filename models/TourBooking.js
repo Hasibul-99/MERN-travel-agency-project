@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {getNewBookingId} = require('../helpers/index.js');
 
 const TourBookingSchema = new mongoose.Schema({
     bookerId: {
@@ -43,6 +44,17 @@ const TourBookingSchema = new mongoose.Schema({
         default: Date.now
     },
  });
+
+ //add bookingId
+
+TourBookingSchema.pre('save', async function(next) {
+    let newBooks = await tourBooking.findOne().sort({ 'createdAt' : -1 });
+    let bookingId = newBooks && newBooks.bookingId ? newBooks.bookingId : "AA000";
+    
+    this.bookingId = await getNewBookingId(bookingId);
+
+    next();
+});
 
  module.exports = tourBooking = mongoose.model('TourBooking', TourBookingSchema);
 
