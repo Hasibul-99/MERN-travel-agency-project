@@ -23,6 +23,7 @@ app.use('/api/users', require('./routers/api/users'));
 app.use('/api/auth', require('./routers/api/auth'));
 app.use('/api/profile', require('./routers/api/profile'));
 app.use('/api/destination', require('./routers/api/destination'));
+app.use('/api/tour-booking', require('./routers/api/tourBooking'));
 
 const PORT = process.env.PORT || 5000;
 

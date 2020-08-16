@@ -119,7 +119,6 @@ router.get('/:id', auth, async (req, res) => {
     }
 });
 
-
 // @route   POST api/destination
 // @dosc    current new destination
 // @access  private
@@ -133,6 +132,8 @@ router.post('/', [auth, [
     check('country', 'Country is required').not().isEmpty(),
     check('city', 'City is required').not().isEmpty(),
     check('zipCode', 'Zip code is required').not().isEmpty(),
+    check('Departure', 'Departure is required').not().isEmpty(),
+    check('departureTime', 'Departure Time is required').not().isEmpty(),
 ]], async (req, res) => {
    const errors = validationResult(req);
 
@@ -143,7 +144,8 @@ router.post('/', [auth, [
    const {
     title, category, keywords, status, description, phone, website,
     email, startOn, endOn, bookinkLastDate, address, country, city, state, zipCode,
-    youtube, facebook, twitter, instagram
+    youtube, facebook, twitter, instagram, tourPlan, amount, maximumTravellers, Departure,
+    departureTime, languages, popularPlaces
    } = req.body;
 
    // build Destination object
@@ -182,6 +184,16 @@ router.post('/', [auth, [
    if (facebook) destinationFields.social.facebook = facebook;
    if (instagram) destinationFields.social.instagram =  instagram;
 
+   if (tourPlan) destinationFields.tourPlan = tourPlan;
+   
+   destinationFields.details = {};
+   if (amount) destinationFields.details.amount = amount;
+   if (maximumTravellers) destinationFields.details.maximumTravellers = maximumTravellers;
+   if (Departure) destinationFields.details.Departure = Departure;
+   if (departureTime) destinationFields.details.departureTime = departureTime;
+   if (languages) destinationFields.details.languages = languages;
+   if (popularPlaces) destinationFields.details.popularPlaces = popularPlaces;
+
    try {
        destination = new Destination(destinationFields);
        await destination.save();
@@ -206,6 +218,8 @@ router.put('/:id', [auth, [
     check('country', 'Country is required').not().isEmpty(),
     check('city', 'City is required').not().isEmpty(),
     check('zipCode', 'Zip code is required').not().isEmpty(),
+    check('Departure', 'Departure is required').not().isEmpty(),
+    check('departureTime', 'Departure Time is required').not().isEmpty(),
 ]], async (req, res) => {
    const errors = validationResult(req);
 
@@ -216,7 +230,8 @@ router.put('/:id', [auth, [
    const {
     title, category, keywords, status, description, phone, website,
     email, startOn, endOn, bookinkLastDate, address, country, city, state, zipCode,
-    youtube, facebook, twitter, instagram
+    youtube, facebook, twitter, instagram, tourPlan, amount, maximumTravellers, Departure,
+    departureTime, languages, popularPlaces
    } = req.body;
 
    // build Destination object
@@ -256,6 +271,16 @@ router.put('/:id', [auth, [
    if (twitter) destinationFields.social.twitter = twitter;
    if (facebook) destinationFields.social.facebook = facebook;
    if (instagram) destinationFields.social.instagram =  instagram;
+
+   if (tourPlan) destinationFields.tourPlan = tourPlan;
+   
+   destinationFields.details = {};
+   if (amount) destinationFields.details.amount = amount;
+   if (maximumTravellers) destinationFields.details.maximumTravellers = maximumTravellers;
+   if (Departure) destinationFields.details.Departure = Departure;
+   if (departureTime) destinationFields.details.departureTime = departureTime;
+   if (languages) destinationFields.details.languages = languages;
+   if (popularPlaces) destinationFields.details.popularPlaces = popularPlaces;
 
    try {
     const destination = await Destination.findByIdAndUpdate(req.params.id, destinationFields, {
@@ -298,7 +323,7 @@ router.put('/:id/photo', auth, async (req, res) => {
             return res.status(400).send('Please upload an image file');
         };
 
-        if (file.size > 1000000) {
+        if (file.size > maxFieleSize) {
             return res.status(400).send(`Please upload an image less than 1000000`);
         };
 

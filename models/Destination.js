@@ -88,6 +88,30 @@ const DestinationSchema = new mongoose.Schema({
             type: String
         }
     },
+    details: {
+        amount : {
+            type: Number,
+            default: 0,
+        },
+        maximumTravellers: {
+            type: Number,
+            default: 1,
+        },
+        Departure: {
+            type: String,
+            required: true
+        },
+        departureTime: {
+            type: String,
+            required: true
+        },
+        languages: {
+            type: [String]
+        },
+        popularPlaces: {
+            type: [String]
+        }
+    },
     date: {
         type: Date,
         default: Date.now
@@ -96,6 +120,14 @@ const DestinationSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    tourPlan: [
+        {
+            title: String
+        },
+        {
+            description: String
+        }
+    ]
 });
 
 module.exports = destination = mongoose.model('Destination', DestinationSchema);
