@@ -105,7 +105,7 @@ router.get('/:id', auth, async (req, res) => {
         const destination = await Destination.findById(req.params.id);
 
         if (!destination) {
-            res.status(404).send('Destination not found');
+            return res.status(404).send('Destination not found');
         };
 
         res.status(200).json({

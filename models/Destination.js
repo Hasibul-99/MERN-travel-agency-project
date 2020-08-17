@@ -112,7 +112,7 @@ const DestinationSchema = new mongoose.Schema({
             type: [String]
         }
     },
-    date: {
+    createdAt: {
         type: Date,
         default: Date.now
     },
