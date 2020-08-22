@@ -4,15 +4,31 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'; 
 import { logout } from '../../../actions/auth';
 import Yatra01 from  "../../../assets/images/Yatra-01.png";
-import demoUser from "../../../assets/images/comment.jpg";
+// import demoUser from "../../../assets/images/comment.jpg";
 
-const  HeaderNavbar = ({auth: {isAuthenticated, loading}, logout}) => {
+const  HeaderNavbar = ({auth: {isAuthenticated, loading, user}, logout}) => {
+    const showUserImage = () => {
+        if (user && user.avatar) {
+            return (
+                <Link to="/profile">
+                    <img alt="User" className="user-image" src={user.avatar}/>
+                </Link>
+            )
+        }
+    }
 
+    const isAdminUser = () => {
+        if (user && user.isAdmin) {
+            return (
+                <Link to="/admin/dashboard">Dashboard</Link>
+            )
+        }
+    }
+    
     const authLinks = (
         <div className="login-btn logout-container float-right">
-            <Link to="/profile">
-                <img alt="" className="user-image" src={demoUser}/>
-            </Link>
+            {showUserImage()}
+            {isAdminUser()}
             <Link onClick={logout} to="#!"><i className="fa fa-unlock-alt"></i> Logout</Link>
         </div>
     );

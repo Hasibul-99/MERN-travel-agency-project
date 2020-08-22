@@ -6,8 +6,7 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
-    user: null,
-    isAdminUser: false
+    user: null
 }
 
 export default function(state = initialState, action) {
