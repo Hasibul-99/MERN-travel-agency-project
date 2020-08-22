@@ -4,6 +4,7 @@ import TourDetail from "../components/pages/destination/tour-detail";
 import Blogs from "../components/pages/blog/index";
 import BlogDetails from "../components/pages/blog/blog-details";
 import Contact from "../components/pages/contact/index";
+import Profile from "../components/pages/profile/index";
 
 const commonRouter = [
     {
@@ -42,7 +43,12 @@ const commonRouter = [
       name: 'Contact',
       component: Contact,
       layout: "/"
-
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
+      layout: "/"
     }
 ]
 

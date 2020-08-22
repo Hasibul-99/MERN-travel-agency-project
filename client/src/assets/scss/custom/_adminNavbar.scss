@@ -10,6 +10,8 @@
             }
         }
         .dropdown-toggle {
+            width: auto;
+            
             &:after {
                 display: none;
             }
