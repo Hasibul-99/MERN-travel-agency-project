@@ -11,30 +11,35 @@ class Sidebar extends Component {
     }
 
     render() {
+        const className = (location, path) => {
+            if (location === path) return "active";
+            else return "";
+        }
+
         return (
             <div className="dashboard-nav">
                 <div className="dashboard-nav-inner">
                     <ul>
-                        <li className="active">
+                        <li className={className(window.location.pathname, '/admin/dashboard')}>
                             <NavLink to="/admin/dashboard">
                                 <span className="mr-2"><AiOutlineSetting/></span>
                                 Dashboard
                             </NavLink>
                         </li>
-                        <li>
+                        <li className={className(window.location.pathname, '/admin/profile')}>
                             <NavLink to="/admin/profile">
                                 <span className="mr-2"><AiOutlineUser/></span>
                                 Edit Profile
                             </NavLink>
                         </li>
-                        <li>
+                        <li className={className(window.location.pathname, '/admin/addTour')}>
                             <NavLink to="/admin/addTour">
                                 <span className="mr-2"><AiOutlinePlusCircle/></span>
                                 Add Tour
                             </NavLink>
                         </li>
                         {/* className="active" */}
-                        <li> 
+                        <li className={className(window.location.pathname, '/admin/tourListing/active')}>
                             <NavLink to="/admin/tourListing/active">
                                 <span className="mr-2"><FiLayers/></span>
                                 Tour Listing
@@ -57,13 +62,13 @@ class Sidebar extends Component {
                                 </li>
                             </ul>   
                         </li>
-                        <li>
+                        <li className={className(window.location.pathname, '/admin/bookingListing')}>
                             <NavLink to="/admin/bookingListing">
                                 <span className="mr-2"><AiOutlineUnorderedList/></span>
                                 Booking List
                             </NavLink>
                         </li>
-                        <li>
+                        <li className={className(window.location.pathname, '/admin/bookingHistory')}>
                             <NavLink to="/admin/bookingHistory">
                                 <span className="mr-2"><AiOutlineFolder/></span>
                                 History
