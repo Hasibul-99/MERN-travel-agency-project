@@ -17,7 +17,7 @@ const  HeaderNavbar = ({auth: {isAuthenticated, loading, user}, logout}) => {
     }
 
     const isAdminUser = () => {
-        if (user && user.isAdmin) {
+        if (user && user.type === "admin") {
             return (
                 <Link to="/admin/dashboard">Dashboard</Link>
             )
@@ -45,7 +45,6 @@ const  HeaderNavbar = ({auth: {isAuthenticated, loading, user}, logout}) => {
         return className;
     }
     
-
     return (
         <>
         <header>
