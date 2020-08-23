@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'; 
 import { logout } from '../../../actions/auth';
 import Yatra01 from  "../../../assets/images/Yatra-01.png";
-// import demoUser from "../../../assets/images/comment.jpg";
 
 const  HeaderNavbar = ({auth: {isAuthenticated, loading, user}, logout}) => {
     const showUserImage = () => {

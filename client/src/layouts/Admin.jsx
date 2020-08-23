@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import routes from "../router/private-router";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'; 
 
 import "../assets/css/style.css";
 import "../assets/css/dashboard.css";
@@ -11,7 +13,8 @@ import AdminNavbar from "../components/Navbars/AdminNavbar";
 class Admin extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+        }
     }
 
     getRoutes = routes => {
@@ -41,14 +44,29 @@ class Admin extends Component {
     };
 
     render() {
-        return (
-            <div id="dashboard">
-                <AdminNavbar></AdminNavbar>
-                <Siddebar></Siddebar>
-                <Switch>{this.getRoutes(routes)}</Switch>
-            </div>
-        )
+      if (this.props.isAuthenticated && this.props.user.type !== "admin") {
+        return <Redirect to="/" />
+      };
+      return (
+          <div id="dashboard">
+              <AdminNavbar></AdminNavbar>
+              <Siddebar></Siddebar>
+              <Switch>{this.getRoutes(routes)}</Switch>
+          </div>
+      )
     }
 }
 
-export default Admin;
+Admin.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  user: PropTypes.object
+};
+
+const mapStateToProps = state => {
+  return { 
+    user: state.auth.user,
+    isAuthenticated: state.auth.isAuthenticated 
+  };
+};
+
+export default connect(mapStateToProps, {})(Admin);
