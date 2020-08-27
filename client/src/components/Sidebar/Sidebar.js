@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'; 
@@ -8,13 +8,16 @@ import { logout } from '../../actions/auth';
 import {AiOutlineSetting, AiOutlineUser, AiOutlinePlusCircle, AiOutlineUnorderedList, AiOutlineFolder, AiOutlineLogout} from "react-icons/ai";
 import {FiLayers} from "react-icons/fi";
 
-const Sidebar = ({auth: {isAuthenticated, loading, user}, logout}) => {
-
+const Sidebar = ({auth: {isAuthenticated, user}, logout}) => {
     const className = (location, path) => {
         let className = '';
         if (location === path) className = "active";
         return className;
     }
+
+    if (!isAuthenticated) {
+        return <Redirect to="/" />
+    };
 
     return (
         <div className="dashboard-nav">
@@ -75,7 +78,7 @@ const Sidebar = ({auth: {isAuthenticated, loading, user}, logout}) => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="">
+                        <Link onClick={logout} to="#!">
                             <span className="mr-2"><AiOutlineLogout/></span>
                             Logout
                         </Link>
