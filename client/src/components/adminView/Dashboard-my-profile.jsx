@@ -1,10 +1,22 @@
-import React, { Component } from "react";
+import React, {useEffect, Fragment} from "react";
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+import {getCurrentProfile} from '../../actions/profile';
+import Spinner from "../../layouts/Spinner";
 import userAvatar from "../../assets/images/user-avatar.jpg";
 
-class DashboardMyProfile extends Component {
-    render() {
-        return (
+const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loading} }) => {
+    
+    useEffect(() => {
+        getCurrentProfile()
+    }, []);
+
+    console.log("loading", loading);
+    
+
+    return loading && profile === null ? ( <Spinner/> ) :(
+    <Fragment>
         <div className="dashboard-content">
             <div className="dashboard-form">
                 <div className="row">
@@ -89,8 +101,20 @@ class DashboardMyProfile extends Component {
                     </div>
                 </div>
             </div>
-        </div>)
-    }
-}
+        </div>
+    </Fragment>
+    )
+};
 
-export default DashboardMyProfile;
+DashboardMyProfile.propTypes = {
+    getCurrentProfile: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    profile: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+    profile: state.profile
+});
+
+export default connect(mapStateToProps, { getCurrentProfile })(DashboardMyProfile);
