@@ -1,4 +1,4 @@
-import React, {useEffect, Fragment} from "react";
+import React, {useEffect, Fragment, useState} from "react";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -7,13 +7,23 @@ import Spinner from "../../layouts/Spinner";
 import userAvatar from "../../assets/images/user-avatar.jpg";
 
 const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loading} }) => {
-    
+    const [formData, setFromData] = useState({
+        name: '',
+        mobile: '',
+        company: '',
+        website: '',
+        boi: '',
+        youtube: '',
+        twitter: '',
+        facebook: '',
+        linkedin: '',
+        instagram: '',
+
+    });
+
     useEffect(() => {
         getCurrentProfile()
     }, []);
-
-    console.log("loading", loading);
-    
 
     return loading && profile === null ? ( <Spinner/> ) :(
     <Fragment>
@@ -46,13 +56,14 @@ const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loadin
                                     <label>Phone Number *</label>
                                     <input type="text"/>
 
-                                    <label>Email Address *</label>
+                                    <label>Company</label>
+                                    <input type="text"/>
+
+                                    <label>Website</label>
                                     <input type="text"/>
 
                                     <label>Your Bio *</label>
                                     <textarea name="notes" id="notes" cols="30" rows="10">
-                                        {/* Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi
-                                         ultricies laoreet ullamcorper phasellus semper */}
                                     </textarea>
 
                                     <label className="twitter-input"><i className="fa fa-twitter"></i> Twitter</label>
@@ -61,6 +72,14 @@ const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loadin
                                     <label className="fb-input"><i className="fa fa-facebook-square"></i> Facebook</label>
                                     <input placeholder="https://www.facebook.com/" type="text"/>
 
+                                    <label className="fb-input"><i className="fa fa-instagram-square"></i> Instagram</label>
+                                    <input placeholder="https://www.instagram.com/" type="text"/>
+
+                                    <label className="fb-input"><i className="fa fa-linkedin-square"></i> Linkedin</label>
+                                    <input placeholder="https://www.linkedin.com/" type="text"/>
+
+                                    <label className="fb-input"><i className="fa fa-youtube-square"></i> YouTube</label>
+                                    <input placeholder="https://www.youtube.com/" type="text"/>
                                 </div>
             
                                 <button className="button">Save Changes</button>

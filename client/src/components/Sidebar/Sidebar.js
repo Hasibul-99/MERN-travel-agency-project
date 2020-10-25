@@ -1,23 +1,17 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types'; 
 import { logout } from '../../actions/auth';
 
 import {AiOutlineSetting, AiOutlineUser, AiOutlinePlusCircle, AiOutlineUnorderedList, AiOutlineFolder, AiOutlineLogout} from "react-icons/ai";
 import {FiLayers} from "react-icons/fi";
 
-const Sidebar = ({auth: {isAuthenticated, user}, logout}) => {
+const Sidebar = () => {
     const className = (location, path) => {
         let className = '';
         if (location === path) className = "active";
         return className;
     }
-
-    if (!isAuthenticated) {
-        return <Redirect to="/" />
-    };
 
     return (
         <div className="dashboard-nav">
@@ -89,13 +83,4 @@ const Sidebar = ({auth: {isAuthenticated, user}, logout}) => {
     );
 };
 
-Sidebar.propTypes = {
-    logout: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
-}
-
-const mapStateToProps = state => ({
-    auth: state.auth
-});
-
-export default connect(mapStateToProps, {logout})(Sidebar);
+export default Sidebar;

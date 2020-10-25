@@ -30,18 +30,9 @@ router.get('/me', auth, async (req, res) => {
 // @route   POST api/profile
 // @dosc    current or update users profile
 // @access  private
-router.post('/', [auth, [
-     check('status', 'Status is required').not().isEmpty(),
-     check('skills', 'skills is required').not().isEmpty()
-]], async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({errors: errors.array()});
-    };
-
+router.post('/', auth, async (req, res) => {
     const {
-        company, website, location, status, bio, skills, githubusername,
+        company, website, location, bio, mobile,
         youtube, facebook, twitter, instagram, linkedin
     } = req.body;
 
@@ -54,13 +45,8 @@ router.post('/', [auth, [
     if (website) profileFields.website = website;
     if (location) profileFields.location = location;
     if (bio) profileFields.bio = bio;
-    if (status) profileFields.status = status;
-    if (githubusername) profileFields.githubusername = githubusername;
-    // Skills - Spilt into array
-    if (skills) {
-      profileFields.skills = skills.split(',');
-    }
-
+    if (mobile) profileFields.mobile = mobile;
+    
     // Social
     profileFields.social = {};
     if (youtube) profileFields.social.youtube = youtube;
