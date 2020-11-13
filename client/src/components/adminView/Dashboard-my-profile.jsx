@@ -6,7 +6,9 @@ import {getCurrentProfile} from '../../actions/profile';
 import Spinner from "../../layouts/Spinner";
 import userAvatar from "../../assets/images/user-avatar.jpg";
 
-const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loading} }) => {
+import {userUpdate} from "../../actions/profile";
+
+const DashboardMyProfile = ({ getCurrentProfile, userUpdate, auth, profile: {profile, loading} }) => {
     const [formData, setFromData] = useState(null);
     const [formSocial, setFromSocial] = useState({});
 
@@ -17,6 +19,7 @@ const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loadin
     useEffect(() => {
         if (profile) {
             setFromData(profile);
+
             if(profile && profile.social) {
                 setFromSocial(profile.social)
             }
@@ -50,6 +53,9 @@ const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loadin
 
 
         console.log("update", updateData);
+
+        userUpdate(updateData);
+
     }
 
     return loading && profile === null ? ( <Spinner/> ) : (
@@ -150,6 +156,7 @@ DashboardMyProfile.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired,
+    userUpdate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -157,4 +164,4 @@ const mapStateToProps = state => ({
     profile: state.profile
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(DashboardMyProfile);
+export default connect(mapStateToProps, { userUpdate, getCurrentProfile })(DashboardMyProfile);
