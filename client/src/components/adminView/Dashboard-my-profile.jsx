@@ -7,25 +7,52 @@ import Spinner from "../../layouts/Spinner";
 import userAvatar from "../../assets/images/user-avatar.jpg";
 
 const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loading} }) => {
-    const [formData, setFromData] = useState({
-        name: '',
-        mobile: '',
-        company: '',
-        website: '',
-        boi: '',
-        youtube: '',
-        twitter: '',
-        facebook: '',
-        linkedin: '',
-        instagram: '',
-
-    });
+    const [formData, setFromData] = useState(null);
+    const [formSocial, setFromSocial] = useState({});
 
     useEffect(() => {
-        getCurrentProfile()
+        getCurrentProfile();
     }, []);
 
-    return loading && profile === null ? ( <Spinner/> ) :(
+    useEffect(() => {
+        if (profile) {
+            setFromData(profile);
+            if(profile && profile.social) {
+                setFromSocial(profile.social)
+            }
+        }
+    }, [profile]);
+
+
+    const changeValue = (e) => {
+        const { name, value } = e.target;
+
+        setFromData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const changeSocialValue = (e) => {
+        const { name, value } = e.target;
+
+        setFromSocial(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }
+
+    const saveChanges = (e) => {
+        e.preventDefault();
+
+        let updateData = formData;
+        updateData.social = formSocial;
+
+
+        console.log("update", updateData);
+    }
+
+    return loading && profile === null ? ( <Spinner/> ) : (
     <Fragment>
         <div className="dashboard-content">
             <div className="dashboard-form">
@@ -38,7 +65,7 @@ const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loadin
                                 
                                 {/* <!-- Avatar --> */}
                                 <div className="edit-profile-photo">
-                                    <img src={userAvatar} alt=""/>
+                                    <img src={formData?.user?.avatar ? `http://localhost:5000/${formData.user.avatar}` : userAvatar} alt=""/>
                                     <div className="change-photo-btn">
                                         <div className="photoUpload">
                                             <span><i className="fa fa-upload"></i> Upload Photo</span>
@@ -49,41 +76,39 @@ const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loadin
             
                                 {/* <!-- Details --> */}
                                 <div className="my-profile">
-
                                     <label>Your Name *</label>
-                                    <input type="text"/>
+                                    <input type="text" name="name" value={formData?.user?.name ? formData.user.name : ""} onChange={changeValue}/>
 
                                     <label>Phone Number *</label>
-                                    <input type="text"/>
+                                    <input type="text" name="mobile" value={formData?.mobile ? formData.mobile : ""} onChange={changeValue}/>
 
                                     <label>Company</label>
-                                    <input type="text"/>
+                                    <input type="text" name="company" value={formData?.company ? formData.company : ""} onChange={changeValue}/>
 
                                     <label>Website</label>
-                                    <input type="text"/>
+                                    <input type="text" name="website" value={formData?.website ? formData.website : ""} onChange={changeValue}/>
 
                                     <label>Your Bio *</label>
-                                    <textarea name="notes" id="notes" cols="30" rows="10">
-                                    </textarea>
+                                    <textarea name="notes" id="notes" cols="30" rows="10" name="boi" 
+                                        value={formData?.bio} onChange={changeValue}></textarea>
 
                                     <label className="twitter-input"><i className="fa fa-twitter"></i> Twitter</label>
-                                    <input placeholder="https://www.twitter.com/" type="text"/>
+                                    <input value={formSocial?.twitter ? formSocial.twitter : ""} placeholder="https://www.twitter.com/" name="twitter" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-facebook-square"></i> Facebook</label>
-                                    <input placeholder="https://www.facebook.com/" type="text"/>
+                                    <input value={formSocial?.facebook ? formSocial.facebook : ""} placeholder="https://www.facebook.com/" name="facebook" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-instagram-square"></i> Instagram</label>
-                                    <input placeholder="https://www.instagram.com/" type="text"/>
+                                    <input value={formSocial?.instagram ? formSocial.instagram : ""} placeholder="https://www.instagram.com/" name="instagram" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-linkedin-square"></i> Linkedin</label>
-                                    <input placeholder="https://www.linkedin.com/" type="text"/>
+                                    <input value={formSocial?.linkedin ? formSocial.linkedin : ""} placeholder="https://www.linkedin.com/" name="linkedin" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-youtube-square"></i> YouTube</label>
-                                    <input placeholder="https://www.youtube.com/" type="text"/>
+                                    <input value={formSocial?.youtube ? formSocial.youtube : ""} placeholder="https://www.youtube.com/" name="youtube" onChange={changeSocialValue} type="text"/>
                                 </div>
             
-                                <button className="button">Save Changes</button>
-
+                                <button className="button" onClick={saveChanges}>Save Changes</button>
                             </div>
                         </div>
                     </div>
@@ -96,25 +121,21 @@ const DashboardMyProfile = ({ getCurrentProfile, auth, profile: {profile, loadin
 
                                 {/* <!-- Change Password --> */}
                                 <div className="my-profile">
-                                    <label className="margin-top-0">Company Name</label>
-                                    <input type="text"/>
+                                    <label>Location *</label>
+                                    <input type="text" name="address" name="location" onChange={changeValue} />
 
-                                    <label>Address *</label>
-                                    <input type="text"/>
+                                    {/* <label>Zip Code *</label>
+                                    <input type="text" name="zipCode" onChange={changeValue}/> */}
 
-                                    <label>Zip Code *</label>
-                                    <input type="text"/>
-
-                                    <label>Country *</label>
-                                    <input type="text"/>
+                                    {/* <label>Country *</label>
+                                    <input type="text" name="country" value="Bangladesh" onChange={changeValue} readOnly/>
 
                                     <label>City *</label>
-                                    <input type="text"/>
+                                    <input type="text" name="city" onChange={changeValue}/>
 
                                     <label>Region/State *</label>
-                                    <input type="text"/>
+                                    <input type="text" name="state" onChange={changeValue}/> */}
                                 </div>
-
                             </div>
                         </div>
                     </div>

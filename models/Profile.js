@@ -19,7 +19,8 @@ const ProfileSchema = new mongoose.Schema({
         type: String
     },
     boi: {
-        type: String
+        type: String,
+        max: 500
     },
     social: {
         youtube: {

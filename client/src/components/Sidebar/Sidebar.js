@@ -1,8 +1,6 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 
-import { logout } from '../../actions/auth';
-
 import {AiOutlineSetting, AiOutlineUser, AiOutlinePlusCircle, AiOutlineUnorderedList, AiOutlineFolder, AiOutlineLogout} from "react-icons/ai";
 import {FiLayers} from "react-icons/fi";
 
@@ -69,12 +67,6 @@ const Sidebar = () => {
                         <Link to="/admin/bookingHistory">
                             <span className="mr-2"><AiOutlineFolder/></span>
                             History
-                        </Link>
-                    </li>
-                    <li>
-                        <Link onClick={logout} to="#!">
-                            <span className="mr-2"><AiOutlineLogout/></span>
-                            Logout
                         </Link>
                     </li>
                 </ul>
