@@ -42,11 +42,6 @@ export const userUpdate = (userData) => async dispatch => {
     const body = JSON.stringify(userData);
 
     try {
-
-        console.log('====================================');
-        console.log("hello", body);
-        console.log('====================================');
-
         const res = await axios.post('/api/profile', body, config);
 
         dispatch({

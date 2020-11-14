@@ -51,10 +51,10 @@ const DashboardMyProfile = ({ getCurrentProfile, userUpdate, auth, profile: {pro
         let updateData = formData;
         updateData.social = formSocial;
 
+        let content = userUpdate(updateData);
 
-        console.log("update", updateData);
 
-        userUpdate(updateData);
+        console.log("update", content);
 
     }
 
@@ -99,21 +99,25 @@ const DashboardMyProfile = ({ getCurrentProfile, userUpdate, auth, profile: {pro
                                         value={formData?.bio} onChange={changeValue}></textarea>
 
                                     <label className="twitter-input"><i className="fa fa-twitter"></i> Twitter</label>
-                                    <input value={formSocial?.twitter ? formSocial.twitter : ""} placeholder="https://www.twitter.com/" name="twitter" onChange={changeSocialValue} type="text"/>
+                                    <input value={formSocial?.twitter ? formSocial.twitter : ""} placeholder="https://www.twitter.com/" 
+                                        name="twitter" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-facebook-square"></i> Facebook</label>
-                                    <input value={formSocial?.facebook ? formSocial.facebook : ""} placeholder="https://www.facebook.com/" name="facebook" onChange={changeSocialValue} type="text"/>
+                                    <input value={formSocial?.facebook ? formSocial.facebook : ""} placeholder="https://www.facebook.com/" 
+                                        name="facebook" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-instagram-square"></i> Instagram</label>
-                                    <input value={formSocial?.instagram ? formSocial.instagram : ""} placeholder="https://www.instagram.com/" name="instagram" onChange={changeSocialValue} type="text"/>
+                                    <input value={formSocial?.instagram ? formSocial.instagram : ""} placeholder="https://www.instagram.com/" 
+                                        name="instagram" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-linkedin-square"></i> Linkedin</label>
-                                    <input value={formSocial?.linkedin ? formSocial.linkedin : ""} placeholder="https://www.linkedin.com/" name="linkedin" onChange={changeSocialValue} type="text"/>
+                                    <input value={formSocial?.linkedin ? formSocial.linkedin : ""} placeholder="https://www.linkedin.com/" 
+                                        name="linkedin" onChange={changeSocialValue} type="text"/>
 
                                     <label className="fb-input"><i className="fa fa-youtube-square"></i> YouTube</label>
-                                    <input value={formSocial?.youtube ? formSocial.youtube : ""} placeholder="https://www.youtube.com/" name="youtube" onChange={changeSocialValue} type="text"/>
+                                    <input value={formSocial?.youtube ? formSocial.youtube : ""} placeholder="https://www.youtube.com/" 
+                                    name="youtube" onChange={changeSocialValue} type="text"/>
                                 </div>
-            
                                 <button className="button" onClick={saveChanges}>Save Changes</button>
                             </div>
                         </div>

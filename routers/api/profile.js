@@ -31,13 +31,10 @@ router.get('/me', auth, async (req, res) => {
 // @dosc    current or update users profile
 // @access  private
 router.post('/', auth, async (req, res) => {
-    const {
-        company, website, location, bio, mobile,
-        youtube, facebook, twitter, instagram, linkedin
-    } = req.body;
+    const {company, website, location, bio, mobile} = req.body;
+    const {youtube, facebook, twitter, instagram, linkedin} = req.body?.social;
 
     // build profile object
-
     const profileFields = {};
     profileFields.user = req.user.id;
     // if (req.body.handle) profileFields.handle = req.body.handle;

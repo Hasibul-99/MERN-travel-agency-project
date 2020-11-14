@@ -57,7 +57,7 @@ class AdminNavbar extends Component {
                         </div>
                         <ul className={menuClass}>
                             <li><NavLink to=""><AiOutlineSetting/> Settings</NavLink></li>
-                            <li><NavLink to=""><AiOutlineSetting/> Profile</NavLink></li>
+                            <li><NavLink to="/admin/profile"><AiOutlineSetting/> Profile</NavLink></li>
                             <li><NavLink to=""><AiOutlineSetting/> Change Password</NavLink></li>
                             <li><NavLink to=""><AiOutlineSetting/> Logout</NavLink></li>
                         </ul>
